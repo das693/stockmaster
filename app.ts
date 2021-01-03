@@ -36,24 +36,28 @@ app.post("/create", function (req, res) {
 
 // ------------------ View ---------------------
 
-app.get("/view", function (req, res) {
-
-    const view=cs.viewAllstocks();
-    
-    // console.log(view.rows);
-    
-    // res.json(view.rows);
-    
-    // cs.print();
+app.get("/view", async function (req, res) {
+    let result=await cs.viewAllstocks()
+    res.json(result)
 });
 
 
-app.get("update", function (req, res) {
+app.get("/update", function (req, res) {
     res.send("Update route");
 });
-app.get("delete", function (req, res) {
-    res.send("Delete route");
+
+// ------------- Delete ----------------
+
+app.get("/delete", function (req, res) {
+    res.render("delete");
 });
+
+app.post("/delete",async function (req, res){
+    const stockCode=req.body.stockcode;
+    await cs.deleteStock(stockCode);
+    await res.send("Stock deleted successfully")
+})
+
 app.listen(3000, () => {
     console.log("Server listening on port 3000");
 })
