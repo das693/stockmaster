@@ -34,12 +34,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-// const express=require('express');
 var express = require('express');
 var bodyParser = require('body-parser');
-// import bodyParser from "body-parser";
 var ejs = require('ejs');
-// import ejs from "ejs"
+// Importing DB query functions
 var cs = require("./functions/queries.ts");
 var app = express();
 app.set('view engine', 'ejs');
@@ -48,7 +46,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get("/", function (req, res) {
     res.render("home");
 });
-// ---------------Create---------------------
+// ---------------Create----------------------
 app.get("/create", function (req, res) {
     res.render("create");
 });
@@ -89,8 +87,15 @@ app.get("/view/:stockCode", function (req, res) {
         });
     });
 });
+//---------------- Update -------------------- 
 app.get("/update", function (req, res) {
-    res.send("Update route");
+    res.render("update_post");
+    var stockcode = req.params.stockCode;
+});
+app.post("/update", function (req, res) {
+    var _a = req.body, stockcode = _a.stockcode, stockname = _a.stockname, quantity = _a.quantity, price = _a.price;
+    cs.updateStock({ stockcode: stockcode, stockname: stockname, quantity: quantity, price: price });
+    res.send("Updated stock successfully");
 });
 // ------------- Delete ----------------
 app.get("/delete", function (req, res) {

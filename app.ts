@@ -1,10 +1,10 @@
-// const express=require('express');
+
 const express = require('express');
 const bodyParser = require('body-parser');
-// import bodyParser from "body-parser";
-const ejs = require('ejs')
-// import ejs from "ejs"
 
+const ejs = require('ejs')
+
+// Importing DB query functions
 const cs = require("./functions/queries.ts")
 
 const app = express();
@@ -18,7 +18,7 @@ app.get("/", (req, res) => {
     res.render("home")
 })
 
-// ---------------Create---------------------
+// ---------------Create----------------------
 
 app.get("/create", function (req, res) {
     res.render("create")
@@ -47,10 +47,19 @@ app.get("/view/:stockCode", async function (req, res) {
     res.json(viewOne);
 })
 
+//---------------- Update -------------------- 
 
 app.get("/update", function (req, res) {
-    res.send("Update route");
+    res.render("update_post")
+    let stockcode = req.params.stockCode;
+   
 });
+app.post("/update",function (req, res) {
+ 
+    const{stockcode,stockname,quantity,price}=req.body;
+    cs.updateStock({stockcode,stockname,quantity,price});
+    res.send("Updated stock successfully")
+})
 
 // ------------- Delete ----------------
 
