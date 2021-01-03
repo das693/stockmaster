@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const ejs = require('ejs')
 // import ejs from "ejs"
 
-const cs = require("./functions/create.ts")
+const cs = require("./functions/queries.ts")
 
 const app = express();
 app.set('view engine', 'ejs')
@@ -34,12 +34,18 @@ app.post("/create", function (req, res) {
 
 })
 
-// ------------------ View ---------------------
+// ----------------View ---------------------
 
 app.get("/view", async function (req, res) {
-    let result=await cs.viewAllstocks()
+    let result = await cs.viewAllstocks()
     res.json(result)
 });
+
+app.get("/view/:stockCode", async function (req, res) {
+    let stockcode = req.params.stockCode;
+    let viewOne = await cs.viewOnestock(stockcode);
+    res.json(viewOne);
+})
 
 
 app.get("/update", function (req, res) {
@@ -52,8 +58,8 @@ app.get("/delete", function (req, res) {
     res.render("delete");
 });
 
-app.post("/delete",async function (req, res){
-    const stockCode=req.body.stockcode;
+app.post("/delete", async function (req, res) {
+    const stockCode = req.body.stockcode;
     await cs.deleteStock(stockCode);
     await res.send("Stock deleted successfully")
 })

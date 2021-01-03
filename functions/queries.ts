@@ -8,16 +8,17 @@ const pool = new Pool({
 })
 
 exports.createStock = async function ({ stockcode, ...others }) {
-    console.log(stockcode);
-    console.log(others.stockname);
     pool.query(`INSERT into "stock_details" VALUES (${stockcode},'${others.stockname}',${others.quantity},${others.price})`);
     // const result = await pool.query (`select * from "stock_details"`);
-
 };
 
 exports.viewAllstocks = async function () {
     const result = await pool.query(`SELECT * FROM "stock_details"`);
-    return result.row;
+    return result.rows;
+}
+exports.viewOnestock =async function (stockcode) {
+    let result = await pool.query(`SELECT * FROM "stock_details" WHERE stock_code=${stockcode}`)
+    return result.rows
 }
 
 exports.deleteStock = async function (stockCode) {

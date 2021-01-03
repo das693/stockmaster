@@ -40,7 +40,7 @@ var bodyParser = require('body-parser');
 // import bodyParser from "body-parser";
 var ejs = require('ejs');
 // import ejs from "ejs"
-var cs = require("./functions/create.ts");
+var cs = require("./functions/queries.ts");
 var app = express();
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -58,7 +58,7 @@ app.post("/create", function (req, res) {
     // cs.print()
     res.send("Stock created successfully");
 });
-// ------------------ View ---------------------
+// ----------------View ---------------------
 app.get("/view", function (req, res) {
     return __awaiter(this, void 0, void 0, function () {
         var result;
@@ -68,6 +68,22 @@ app.get("/view", function (req, res) {
                 case 1:
                     result = _a.sent();
                     res.json(result);
+                    return [2 /*return*/];
+            }
+        });
+    });
+});
+app.get("/view/:stockCode", function (req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var stockcode, viewOne;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    stockcode = req.params.stockCode;
+                    return [4 /*yield*/, cs.viewOnestock(stockcode)];
+                case 1:
+                    viewOne = _a.sent();
+                    res.json(viewOne);
                     return [2 /*return*/];
             }
         });
